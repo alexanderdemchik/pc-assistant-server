@@ -20,3 +20,11 @@ export const authMiddleware: Koa.Middleware = async (ctx, next) => {
 
     await next();
 };
+
+export function requireAuth(ctx, next) {
+    if (!ctx.user) {
+        throw new Error('not auth');
+    }
+
+    next();
+}

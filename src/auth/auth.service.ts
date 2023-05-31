@@ -8,6 +8,7 @@ const YANDEX_USER_INFO_URL = 'https://login.yandex.ru/info?&format=json';
 const TOKEN_TTL_MS = 86400000 * 7;
 
 export async function yandexLogin(accessToken: string): Promise<IYandexLoginResult> {
+    console.log(accessToken);
     const info = await got
         .get(YANDEX_USER_INFO_URL, {
             headers: { Authorization: `OAuth ${accessToken}` },
