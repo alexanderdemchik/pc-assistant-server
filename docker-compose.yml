@@ -15,9 +15,11 @@ services:
     image: nginx:latest
     ports:
       - '80:80'
+      - '443:443'
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - ./static:/var/www/static
+      - /data/certs:/etc/nginx/certs
     restart: always
   cache:
     image: redis:6.2-alpine
@@ -25,7 +27,3 @@ services:
     ports:
       - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning
-    volumes: 
-      - cache:/data
-volumes: 
-  cache:
