@@ -20,7 +20,51 @@ router.post('/auth/yandex', auth.yandexLogin);
 router.post('/alice/webhook', (ctx) => {
     console.log(ctx.body);
     console.log(ctx.headers);
-    ctx.body = { text: 'good' };
+    ctx.body = {
+        response: {
+            text: 'Здравствуйте! Это мы, хороводоведы.',
+            tts: 'Здравствуйте! Это мы, хоров+одо в+еды.',
+            card: {
+                type: '...',
+            },
+            buttons: [
+                {
+                    title: 'Надпись на кнопке',
+                    payload: {},
+                    url: 'https://example.com/',
+                    hide: true,
+                },
+            ],
+            end_session: false,
+            directives: {},
+        },
+        session_state: {
+            value: 10,
+        },
+        user_state_update: {
+            value: 42,
+        },
+        application_state: {
+            value: 37,
+        },
+        analytics: {
+            events: [
+                {
+                    name: 'custom event',
+                },
+                {
+                    name: 'another custom event',
+                    value: {
+                        field: 'some value',
+                        'second field': {
+                            'third field': 'custom value',
+                        },
+                    },
+                },
+            ],
+        },
+        version: '1.0',
+    };
     ctx.status = 200;
 });
 
