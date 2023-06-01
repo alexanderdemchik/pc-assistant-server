@@ -12,7 +12,7 @@ router.get('/user', requireAuth, (ctx) => {
     //@ts-ignore
     ctx.body = ctx.user;
     ctx.status = 200;
-})
+});
 
 // auth
 router.post('/auth/yandex', auth.yandexLogin);
@@ -20,6 +20,15 @@ router.post('/auth/yandex', auth.yandexLogin);
 router.post('/alice/webhook', (ctx) => {
     console.log(ctx.body);
     console.log(ctx.headers);
+    ctx.body = { text: 'good' };
+    ctx.status = 200;
+});
+
+router.get('/alice/webhook', (ctx) => {
+    console.log(ctx.body);
+    console.log(ctx.headers);
+    ctx.body = { text: 'good' };
+    ctx.status = 200;
 });
 
 export default router;
