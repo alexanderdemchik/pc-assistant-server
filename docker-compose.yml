@@ -11,6 +11,7 @@ services:
     container_name: proxy_nginx
     depends_on:
       - app
+      - cache
     image: nginx:latest
     ports:
       - '80:80'
@@ -18,3 +19,11 @@ services:
       - ./nginx:/etc/nginx/conf.d
       - ./static:/var/www/static
     restart: always
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes: 
+      - cache:/data

@@ -1,8 +1,8 @@
+import 'dotenv/config'
 import Koa from 'koa';
 import logger from 'koa-logger';
 import json from 'koa-json';
 import router from './router';
-import dotenv from 'dotenv';
 import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import { authMiddleware } from './auth/auth.middleware';
@@ -11,8 +11,6 @@ import http from 'http';
 import { pubClient, subClient } from './data/redis';
 import { createAdapter } from '@socket.io/redis-adapter';
 import { Token } from './data/Token';
-process.env.DEBUG = '*';
-dotenv.config();
 
 const app = new Koa();
 const server = http.createServer(app.callback());
