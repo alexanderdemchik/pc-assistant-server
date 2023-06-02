@@ -20,6 +20,7 @@ services:
       - ./nginx:/etc/nginx/conf.d
       - ./static:/var/www/static
       - /data/certs:/etc/nginx/certs
+      - /etc/letsencrypt/:/etc/letsencrypt/
     restart: always
   cache:
     image: bitnami/redis:latest
