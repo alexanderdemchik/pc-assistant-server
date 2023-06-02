@@ -32,8 +32,10 @@ router.post('/alice/webhook', async (ctx) => {
         }
 
         const userId = userInfo.id || ctx.body.state.user.userId;
+        console.log(userId);
         //@ts-ignore
         if (ctx.request?.body?.request?.command?.includes('выключи')) {
+            console.log('sockets');
             const sockets = await io.fetchSockets();
             console.log(sockets[0]);
             sockets[0]?.emit('command', { name: 'shutdown' });
@@ -42,7 +44,7 @@ router.post('/alice/webhook', async (ctx) => {
         ctx.body = {
             response: {
                 text: 'красавчик',
-                tts: 'краааа+савчик',
+                tts: 'краааасавчик',
             },
             version: '1.0',
         };

@@ -14,7 +14,6 @@ export const authMiddleware: Koa.Middleware = async (ctx, next) => {
             const user = await User.findById(dbToken.userId).orFail();
             ctx.user = user.toDto();
         } catch (err) {
-            console.log(err);
         }
     }
 

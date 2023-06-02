@@ -21,6 +21,7 @@ io.adapter(createAdapter(pubClient, subClient));
 
 io.on('connection', async (socket) => {
     const { deviceId, token } = socket.handshake.query;
+    console.log('connection');
 
     try {
         const { userId } = await Token.findOne({ token });
