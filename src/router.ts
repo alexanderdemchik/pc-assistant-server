@@ -22,46 +22,12 @@ router.post('/alice/webhook', (ctx) => {
     console.log(ctx.headers);
     ctx.body = {
         response: {
-            text: 'Здравствуйте! Это мы, хороводоведы.',
-            tts: 'Здравствуйте! Это мы, хоров+одо в+еды.',
-            card: {
-                type: '...',
-            },
-            buttons: [
-                {
-                    title: 'Надпись на кнопке',
-                    payload: {},
-                    url: 'https://example.com/',
-                    hide: true,
-                },
-            ],
+            text: 'необходима авторизация',
+            tts: 'необходима авторизация',
             end_session: false,
-            directives: {},
-        },
-        session_state: {
-            value: 10,
-        },
-        user_state_update: {
-            value: 42,
-        },
-        application_state: {
-            value: 37,
-        },
-        analytics: {
-            events: [
-                {
-                    name: 'custom event',
-                },
-                {
-                    name: 'another custom event',
-                    value: {
-                        field: 'some value',
-                        'second field': {
-                            'third field': 'custom value',
-                        },
-                    },
-                },
-            ],
+            directives: {
+                start_account_linking: {},
+            },
         },
         version: '1.0',
     };
