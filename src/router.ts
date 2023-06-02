@@ -1,6 +1,9 @@
 import Router from 'koa-router';
 import * as auth from './auth/auth.contoller';
 import { requireAuth } from './auth/auth.middleware';
+import { getUserInfo } from './yandex/yandex.service';
+import { IYandexUserInfo } from './yandex/yandex.types';
+import { io } from './wsinit';
 
 const router = new Router();
 
@@ -17,27 +20,49 @@ router.get('/user', requireAuth, (ctx) => {
 // auth
 router.post('/auth/yandex', auth.yandexLogin);
 
-router.post('/alice/webhook', (ctx) => {
-    console.log(ctx.body);
-    console.log(ctx.headers);
-    ctx.body = {
-        response: {
-            text: 'необходима авторизация',
-            tts: 'необходима авторизация',
-            end_session: false,
-            directives: {
-                start_account_linking: {},
-            },
-        },
-        version: '1.0',
-    };
-    ctx.status = 200;
-});
+router.post('/alice/webhook', async (ctx) => {
+    if (ctx.headers.authorization) {
+        let userInfo: IYandexUserInfo;
+        if (!ctx.body.state?.user?.userId) {
+            try {
+                userInfo = await getUserInfo(ctx.headers.authorization.replace('Bearer ', ''));
+            } catch (e) {}
+        }
 
-router.get('/alice/webhook', (ctx) => {
-    console.log(ctx.body);
-    console.log(ctx.headers);
-    ctx.body = { text: 'good' };
+        const userId = userInfo.id || ctx.body.state.user.userId;
+        if (ctx.body.request?.command?.includes('выключи')) {
+            const sockets = await io.fetchSockets();
+            console.log(sockets[0])
+            sockets[0]?.emit('command', { name: 'shutdown' });
+        }
+
+        ctx.body = {
+            response: {
+                text: 'красавчик',
+                tts: 'краааа+савчик',
+            },
+            version: '1.0',
+        };
+
+        if (userInfo) {
+            ctx.body.user_state_update = {
+                userId: userInfo.id,
+            };
+        }
+    } else {
+        ctx.body = {
+            response: {
+                text: 'необходима авторизация',
+                tts: 'необходима авторизация',
+                end_session: false,
+                directives: {
+                    start_account_linking: {},
+                },
+            },
+            version: '1.0',
+        };
+    }
+
     ctx.status = 200;
 });
 

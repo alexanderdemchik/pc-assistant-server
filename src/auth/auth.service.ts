@@ -1,20 +1,14 @@
 import got from 'got';
-import { IYandexLoginResult, IYandexUserInfo } from './auth.types';
+import { IYandexLoginResult } from './auth.types';
 import { User } from '../data/User';
 import { randomUUID } from 'crypto';
 import { Token } from '../data/Token';
+import { getUserInfo } from '../yandex/yandex.service';
 
-const YANDEX_USER_INFO_URL = 'https://login.yandex.ru/info?&format=json';
 const TOKEN_TTL_MS = 86400000 * 7;
 
 export async function yandexLogin(accessToken: string): Promise<IYandexLoginResult> {
-    console.log(accessToken);
-    const info = await got
-        .get(YANDEX_USER_INFO_URL, {
-            headers: { Authorization: `OAuth ${accessToken}` },
-        })
-        .json<IYandexUserInfo>();
-
+    const info = await getUserInfo(accessToken);
     let user = await User.findOne({ yandexId: info.id });
 
     if (!user) {

@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import 'dotenv/config';
 import Koa from 'koa';
 import logger from 'koa-logger';
 import json from 'koa-json';
@@ -6,16 +6,17 @@ import router from './router';
 import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import { authMiddleware } from './auth/auth.middleware';
-import { Server } from 'socket.io';
 import http from 'http';
 import { pubClient, subClient } from './data/redis';
 import { createAdapter } from '@socket.io/redis-adapter';
 import { Token } from './data/Token';
+import { init } from './wsinit';
 
 const app = new Koa();
 const server = http.createServer(app.callback());
 
-const io = new Server(server, { path: '/ws' });
+const io = init(server);
+
 io.adapter(createAdapter(pubClient, subClient));
 
 io.on('connection', async (socket) => {
