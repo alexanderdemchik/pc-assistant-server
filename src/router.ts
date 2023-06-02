@@ -23,16 +23,19 @@ router.post('/auth/yandex', auth.yandexLogin);
 router.post('/alice/webhook', async (ctx) => {
     if (ctx.headers.authorization) {
         let userInfo: IYandexUserInfo;
-        if (!ctx.body.state?.user?.userId) {
+        console.log(ctx.request.body);
+        //@ts-ignore
+        if (!ctx.request.body?.state?.user?.userId) {
             try {
                 userInfo = await getUserInfo(ctx.headers.authorization.replace('Bearer ', ''));
             } catch (e) {}
         }
 
         const userId = userInfo.id || ctx.body.state.user.userId;
-        if (ctx.body.request?.command?.includes('выключи')) {
+        //@ts-ignore
+        if (ctx.request?.body?.request?.command?.includes('выключи')) {
             const sockets = await io.fetchSockets();
-            console.log(sockets[0])
+            console.log(sockets[0]);
             sockets[0]?.emit('command', { name: 'shutdown' });
         }
 
