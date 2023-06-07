@@ -13,8 +13,7 @@ export const authMiddleware: Koa.Middleware = async (ctx, next) => {
             const dbToken = await Token.findOne({ token }).orFail();
             const user = await User.findById(dbToken.userId).orFail();
             ctx.user = user.toDto();
-        } catch (err) {
-        }
+        } catch (err) {}
     }
 
     await next();
@@ -22,7 +21,12 @@ export const authMiddleware: Koa.Middleware = async (ctx, next) => {
 
 export function requireAuth(ctx, next) {
     if (!ctx.user) {
-        throw new Error('not auth');
+        ctx.status = 403;
+        ctx.body = {
+            message: 'Forbidden',
+        };
+
+        return;
     }
 
     next();
