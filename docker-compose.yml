@@ -5,8 +5,6 @@ services:
     build: ./
     restart: unless-stopped
     env_file: ./.env
-    ports:
-      - "${PORT}"
     deploy:
       replicas: 2
   nginx:
@@ -16,19 +14,18 @@ services:
       - cache
     image: nginx:latest
     ports:
-      - '80:80'
-      - '443:443'
+      - '${NGINX_PORT}:${NGINX_PORT}'
     volumes:
-      - ./nginx:/etc/nginx/conf.d
-      - ./static:/var/www/static
-      - /data/certs:/etc/nginx/certs
-      - /etc/letsencrypt/:/etc/letsencrypt/
+      - ./nginx:/etc/nginx/templates
+    environment:
+      - 'NGINX_PORT=${NGINX_PORT}'
+      - 'PORT=${PORT}'
     restart: always
   cache:
     image: bitnami/redis:latest
     restart: always
     ports:
-      - '6379:6379'
+      - '6379'
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
