@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     env_file: ./.env
     ports:
-      - '${PORT}': '${PORT}'
+      - "${PORT}:${PORT}"
     deploy:
       replicas: 2
     depends_on:
