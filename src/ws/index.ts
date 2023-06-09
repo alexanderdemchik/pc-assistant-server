@@ -8,7 +8,7 @@ import { renewTokenLife } from '../auth/auth.service';
 
 export let io: Server;
 
-export function init(server: http.Server) {
+export function init(server: http.Server): void {
     io = new Server(server, { path: '/ws' });
 
     io.adapter(createAdapter(pubClient, subClient));
@@ -43,7 +43,7 @@ export async function getConnectedUserDevicesIds(userId: string): Promise<string
     return sockets.map((socket) => socket.data.deviceId);
 }
 
-export async function sendCommandToDevice(deviceId: string, commandPayload: any) {
+export async function sendCommandToDevice(deviceId: string, commandPayload: any): Promise<void> {
     const sockets = await io.in(deviceId).fetchSockets();
     const socket = sockets[0];
 

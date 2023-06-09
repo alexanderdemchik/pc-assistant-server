@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 // 1. Create an interface representing a document in MongoDB.
 interface IToken {

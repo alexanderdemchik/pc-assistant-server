@@ -15,7 +15,7 @@ export function getUserInfo(accessToken: string): Promise<IYandexUserInfo> {
         .json<IYandexUserInfo>();
 }
 
-export async function handleAliceRequest(body: IAliceRequest, userId: string) {
+export async function handleAliceRequest(body: IAliceRequest, userId: string): Promise<any> {
     const connectedDevices = await getConnectedUserDevicesIds(userId);
     const user = await getUserById(userId);
 

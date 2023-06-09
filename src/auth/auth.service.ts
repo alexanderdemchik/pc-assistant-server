@@ -8,7 +8,7 @@ const TOKEN_TTL_MS = 86400000 * 7;
 
 export async function yandexLogin(accessToken: string): Promise<IYandexLoginResult> {
     const info = await getUserInfo(accessToken);
-    let user = await createUserOrUpdateInfoUsingYandexInfo(info);
+    const user = await createUserOrUpdateInfoUsingYandexInfo(info);
 
     const token = randomUUID();
 

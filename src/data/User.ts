@@ -17,7 +17,7 @@ interface IUserMethods {
     toDto(): UserDto;
 }
 
-type UserModel = Model<IUser, {}, IUserMethods>;
+type UserModel = Model<IUser, object, IUserMethods>;
 
 const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     name: { type: String, required: false },
