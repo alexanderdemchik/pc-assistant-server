@@ -18,7 +18,9 @@ jobs:
       - run: npm run lint
   deploy:
     needs: build
-    environment: production
+    environment: 
+      name: production
+      url: https://pcmanager.aliaksandrdzemchyk.site/
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
