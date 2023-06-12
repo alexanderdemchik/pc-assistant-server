@@ -16,6 +16,7 @@ export function getUserInfo(accessToken: string): Promise<IYandexUserInfo> {
 }
 
 export async function handleAliceRequest(body: IAliceRequest, userId: string): Promise<any> {
+    logger.info('%o', body);
     const connectedDevices = await getConnectedUserDevicesIds(userId);
     const user = await getUserById(userId);
 
@@ -37,8 +38,6 @@ export async function handleAliceRequest(body: IAliceRequest, userId: string): P
 
     const command = body.request.command;
 
-    if (command.includes('выключи')) {
-        logger.debug(`send command shutdown to deviceId ${deviceToSendCommand} userId ${userId}`);
-        sendCommandToDevice(deviceToSendCommand, { name: 'shutdown' });
-    }
+    logger.debug(`send command shutdown to deviceId ${deviceToSendCommand} userId ${userId}`);
+    sendCommandToDevice(deviceToSendCommand, { command });
 }
