@@ -38,6 +38,6 @@ export async function handleAliceRequest(body: IAliceRequest, userId: string): P
 
     const command = body.request.command;
 
-    logger.debug(`send command shutdown to deviceId ${deviceToSendCommand} userId ${userId}`);
+    logger.debug(`send command to deviceId ${deviceToSendCommand} userId ${userId} command ${command}`);
     sendCommandToDevice(deviceToSendCommand, { command });
 }

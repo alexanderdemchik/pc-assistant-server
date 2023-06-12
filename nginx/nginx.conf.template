@@ -2,8 +2,6 @@ server {
   listen ${NGINX_PORT};
 
 	location / {
-		proxy_redirect off;
-    proxy_pass_request_headers on;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header Host $http_host;
     proxy_set_header X-NginX-Proxy true;
