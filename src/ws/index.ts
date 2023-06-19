@@ -14,8 +14,13 @@ export function init(server: http.Server): void {
     io.adapter(createAdapter(pubClient, subClient));
 
     io.on('connection', async (socket) => {
-        const { deviceId, token, deviceName } = socket.handshake.query;
+        const { deviceId } = socket.handshake.query;
         logger.debug(`new ws connection deviceId: ${deviceId}`);
+    });
+
+    io.use(async (socket, next) => {
+        const { deviceId, deviceName } = socket.handshake.query;
+        const { token } = socket.handshake.auth;
 
         try {
             const user = await getUserByToken(token as string);
@@ -30,9 +35,11 @@ export function init(server: http.Server): void {
             socket.join([user.id, deviceId as string]);
 
             renewTokenLife(token as string);
+
+            next();
         } catch (e) {
-            logger.error(`Unable authorize connection deviceId: ${deviceId}`);
-            socket.emit('authError', {});
+            logger.error(`Unable authorize connection deviceId: ${deviceId} error: %o`, e);
+            next(new Error('Auth error'));
         }
     });
 }
@@ -43,7 +50,7 @@ export async function getConnectedUserDevicesIds(userId: string): Promise<string
     return sockets.map((socket) => socket.data.deviceId);
 }
 
-export async function sendCommandToDevice(deviceId: string, commandPayload: any): Promise<void> {
+export async function sendCommandToDevice(deviceId: string, payload: any): Promise<void> {
     const sockets = await io.in(deviceId).fetchSockets();
     const socket = sockets[0];
 
@@ -51,5 +58,5 @@ export async function sendCommandToDevice(deviceId: string, commandPayload: any)
         throw new Error();
     }
 
-    socket.emit('command', commandPayload);
+    socket.emit('message', payload);
 }
