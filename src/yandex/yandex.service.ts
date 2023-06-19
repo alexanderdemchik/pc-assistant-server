@@ -40,4 +40,6 @@ export async function handleAliceRequest(body: IAliceRequest, userId: string): P
 
     logger.debug(`send command to deviceId ${deviceToSendCommand} userId ${userId} command ${command}`);
     sendCommandToDevice(deviceToSendCommand, { command });
+
+    return buildAliceResponse('');
 }
