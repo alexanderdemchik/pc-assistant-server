@@ -5,7 +5,7 @@ export const errorHanlingMiddleware: Middleware = async (ctx, next) => {
     try {
         await next();
     } catch (e) {
-        logger.error(`Error during hanling request from alice %o`, e);
+        logger.error(`Error during hanling request from alice %o`, e?.message);
         ctx.body = {};
         ctx.status = 400;
     }
