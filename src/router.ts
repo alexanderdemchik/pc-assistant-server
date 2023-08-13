@@ -3,8 +3,11 @@ import * as auth from './auth/auth.contoller';
 import * as yandex from './yandex/yandex.controller';
 import { authMiddleware, requireAuth } from './auth/auth.middleware';
 import { aliceErrorHanlingMiddleware } from './yandex/alice-error-handling.middleware';
+import { errorHanlingMiddleware } from './error-handling.middleware';
 
 const router = new Router();
+
+router.use(errorHanlingMiddleware);
 
 router.get('/version', (ctx) => {
     ctx.body = process.env.npm_package_version;

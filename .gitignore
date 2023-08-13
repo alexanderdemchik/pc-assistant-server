@@ -2,3 +2,5 @@
 node_modules
 logs
 build
+dist
+service
