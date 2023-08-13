@@ -6,6 +6,8 @@ export const errorHanlingMiddleware: Middleware = async (ctx, next) => {
         await next();
     } catch (e) {
         logger.error(`error %o`, e?.message);
+        logger.error(`error %o`, e?.response);
+        logger.error(`error %o`, e?.status);
         ctx.body = {};
         ctx.status = 400;
     }
