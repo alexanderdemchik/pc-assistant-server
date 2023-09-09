@@ -7,6 +7,11 @@ services:
     env_file: ./.env
     deploy:
       replicas: 2
+  peer:
+    container_name: peer
+    image: peerjs/peerjs-server
+    ports:
+      - '9000:9000'
   nginx:
     container_name: proxy_nginx
     depends_on:
